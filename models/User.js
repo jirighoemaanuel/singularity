@@ -23,28 +23,32 @@ class User {
 
   // Find user by ID
   static async findById(id) {
-    const query = 'SELECT * FROM users WHERE id = $1;';
+    const query =
+      'SELECT name, email, role, created_at FROM users WHERE id = $1;';
     const result = await pool.query(query, [id]);
     return result.rows[0];
   }
 
   // Find user by email
   static async findByEmail(email) {
-    const query = 'SELECT * FROM users WHERE email = $1;';
+    const query =
+      'SELECT name, email, role, created_at FROM users WHERE email = $1;';
     const result = await pool.query(query, [email]);
     return result.rows[0];
   }
 
   // Find user by username
   static async findByUsername(username) {
-    const query = 'SELECT * FROM users WHERE username = $1;';
+    const query =
+      'SELECT name, email, role, created_at FROM users WHERE username = $1;';
     const result = await pool.query(query, [username]);
     return result.rows[0];
   }
 
   // Get all users
   static async findAll() {
-    const query = 'SELECT * FROM users ORDER BY created_at DESC;';
+    const query =
+      'SELECT name, email, role, created_at FROM users ORDER BY created_at DESC;';
     const result = await pool.query(query);
     return result.rows;
   }
