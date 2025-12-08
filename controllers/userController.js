@@ -48,10 +48,10 @@ export const getUserById = async (req, res) => {
 // Create new user
 export const createUser = async (req, res) => {
   try {
-    const { username, email, password, first_name, last_name } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Basic validation
-    if (!username || !email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
         message: 'Username, email, and password are required',
@@ -59,11 +59,10 @@ export const createUser = async (req, res) => {
     }
 
     const newUser = await User.create({
-      username,
+      name,
       email,
-      password, // In production, hash this first!
-      first_name,
-      last_name,
+      password,
+      role,
     });
 
     res.status(201).json({

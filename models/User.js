@@ -1,16 +1,22 @@
 import pool from '../db.js';
+import bcrypt from 'bcrypt';
 
-
+const saltRounds = 10;
 
 class User {
   // Create a new user
-  static async create({ name, email, password_hash, role, created_at }) {
+  static async create({ name, email, password, role }) {
     const query = `
-      INSERT INTO users (name, email, password_hash, role, created_at)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING *;
+      INSERT INTO users (name, email, password_hash, role)
+      VALUES ($1, $2, $3, $4)
+      RETURNING name, email, role, created_at;
     `;
-    const values = [name, email, password_hash, role, created_at];
+
+    // Hash the password first
+    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+    const values = [name, email, passwordHash, role];
+
     const result = await pool.query(query, values);
     return result.rows[0];
   }
