@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import db from './db.js';
+import userRoutes from './routes/user.js';
 dotenv.config();
 
 const app = express();
@@ -8,15 +8,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.get('/', async (req, res) => {
-  try {
-    const employees = await db.query('SELECT * FROM employees;');
-    res.status(200).json({
-      employees: employees.rows,
-    });
-  } catch (error) {
-    console.error(error);
-  }
+// Routes
+app.use('/api/v1/users', userRoutes);
+
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to SabiLearn API' });
 });
 
 app.listen(PORT, () => {
